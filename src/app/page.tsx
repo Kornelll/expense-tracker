@@ -1,10 +1,18 @@
 import Image from 'next/image'
+import { AuthForm } from '@/components/ui/auth-form'
+import { redirect } from 'next/navigation'
+import { getAuthSession } from '@/lib/auth'
 
 const TITLE = 'Welcome Dear!'
 const DESCRIPTION =
   'Welcome to our Expense Tracker app! Take control of your finances effortlessly with our intuitive and user-friendly platform.'
 
 export default async function Home() {
+  const session = await getAuthSession()
+  if (session) {
+    redirect('/dashboard')
+  }
+
   return (
     <main className="min-h-screen grid lg:grid-cols-2">
       {/* Left Section */}
@@ -14,7 +22,7 @@ export default async function Home() {
           <p className="text-sm text-center text-muted-foreground">
             {DESCRIPTION}
           </p>
-          {/* AuthForm */}
+          <AuthForm />
         </div>
       </section>
 

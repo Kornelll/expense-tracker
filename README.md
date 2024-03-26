@@ -7,7 +7,15 @@ This application has been developed to solve a major problem of budget and expen
 - Next.js + Typescript
 - Tailwindcss
 - Shadcn UI
+- NextAuth
 - Prisma
+
+Libraries
+
+- Zod
+- React Hook Form
+- Sonner (Toast notification)
+- Chart.js + React Charjs 2
 
 ## Installing Dependecies
 
@@ -15,6 +23,19 @@ Run this command to install all the required:
 
 ```bash
 npm install
+```
+
+## SetUp Environment Variables
+
+The .env file will contain:
+
+```bash
+DATABASE_URL=""
+
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+
+NEXTAUTH_SECRET=""
 ```
 
 ## SetUp Database
