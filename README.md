@@ -7,3 +7,40 @@ This application has been developed to solve a major problem of budget and expen
 - Next.js + Typescript
 - Tailwindcss
 - Shadcn UI
+- Prisma
+
+## Installing Dependecies
+
+Run this command to install all the required:
+
+```bash
+npm install
+```
+
+## SetUp Database
+
+You can choose which database you want to use in `prisma/schema.prisma` file and add the specific URL for the database to `.env` file. To push database to production.
+
+```bash
+npx primsa db push
+```
+
+For generating client code
+
+```bash
+npx primsa generate
+```
+
+You can run below command to visualize the data stored in your database (optional).
+
+```bash
+npx prisma studio
+```
+
+**Note:** A `"postinstall": "prisma generate"` script is added to the `package.json` file to generate prisma database duraing deployment.
+
+Now that you have Set up all the pre-requisites, you are good to go. Go ahead and run the application.
+
+```bash
+npm run dev
+```
