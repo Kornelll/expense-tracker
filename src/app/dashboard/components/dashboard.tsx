@@ -1,6 +1,7 @@
 import type { Expense, Income } from '@prisma/client'
 import type { FC, PropsWithChildren } from 'react'
 
+import { AddTransaction } from './add-transaction'
 import { Chart } from './chart'
 
 interface DashboardProps {
@@ -37,6 +38,9 @@ export const Dashboard: FC<DashboardProps> = ({ incomes, expenses }) => {
           <Chart incomes={incomes} expenses={expenses} />
         </div>
       </section>
+
+      {/* Floating Button */}
+      <AddTransaction />
     </div>
   )
 }
