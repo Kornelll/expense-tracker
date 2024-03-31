@@ -117,7 +117,7 @@ export const AuthForm = () => {
           )}
         />
 
-        <Button type="submit">{forSignUp ? 'Sign Up' : 'Sign In'}</Button>
+        <Button type="submit">{forSignUp ? 'Sign Up' : 'Login'}</Button>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -141,7 +141,7 @@ export const AuthForm = () => {
             onClick={() => setForSignUp((p) => !p)}
             className="ml-1 text-foreground/90 hover:text-foreground hover:underline cursor-pointer"
           >
-            {forSignUp ? 'Sign In' : 'Sign Up'}
+            {forSignUp ? 'Login' : 'Sign Up'}
           </span>
         </div>
       </form>

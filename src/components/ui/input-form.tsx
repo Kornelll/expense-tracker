@@ -83,8 +83,10 @@ export const InputForm: FC<InputFormProps> = ({ form, types }) => {
                   <SelectValue placeholder="Select a Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {types?.map((item) => (
-                    <SelectItem value={item}>{capitalize(item)}</SelectItem>
+                  {types?.map((item, index) => (
+                    <SelectItem key={item + index} value={item}>
+                      {capitalize(item)}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>

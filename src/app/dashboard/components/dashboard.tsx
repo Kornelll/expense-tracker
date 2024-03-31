@@ -1,8 +1,12 @@
 import type { Expense, Income } from '@prisma/client'
 import type { FC, PropsWithChildren } from 'react'
 
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { AddTransaction } from './add-transaction'
 import { Chart } from './chart'
+import { Card } from './card'
+
+import { cn } from '@/lib/utils'
 
 interface DashboardProps {
   incomes: Income[]
@@ -11,9 +15,19 @@ interface DashboardProps {
 
 export const Dashboard: FC<DashboardProps> = ({ incomes, expenses }) => {
   // Calculations
-  const totalIncome = () => incomes?.reduce((a, b) => a + b.amount, 0)
-  const totalExpenses = () => expenses?.reduce((a, b) => a + b.amount, 0)
-  const balance = totalIncome() - totalExpenses()
+  const totalIncome = incomes?.reduce((a, b) => a + b.amount, 0)
+  const totalExpenses = expenses?.reduce((a, b) => a + b.amount, 0)
+  const balance = totalIncome - totalExpenses
+
+  const getHistory = () => {
+    const combined = [...incomes, ...expenses]
+    combined.sort(
+      (a, b) =>
+        new Date(b.createdAt?.toString() as string)?.getTime() -
+        new Date(a.createdAt?.toString() as string)?.getTime()
+    )
+    return combined
+  }
 
   return (
     <div className="grid gap-10 lg:grid-cols-3 p-5 md:p-10">
@@ -28,8 +42,16 @@ export const Dashboard: FC<DashboardProps> = ({ incomes, expenses }) => {
               amount={balance}
               className="md:col-span-2"
             />
-            <DashboardCard title="Income" amount={totalIncome()} />
-            <DashboardCard title="Expense" amount={totalExpenses()} />
+            <DashboardCard
+              title="Income"
+              amount={totalIncome}
+              className="text-green-400"
+            />
+            <DashboardCard
+              title="Expense"
+              amount={totalExpenses}
+              className="text-destructive"
+            />
           </div>
         </div>
 
@@ -38,6 +60,17 @@ export const Dashboard: FC<DashboardProps> = ({ incomes, expenses }) => {
           <Chart incomes={incomes} expenses={expenses} />
         </div>
       </section>
+
+      {/* Transactions Section */}
+      <ScrollArea className="lg:max-h-[1080px] lg:overflow-y-auto w-full p-4">
+        <div className="flex flex-col gap-4">
+          <Heading>Transaction History</Heading>
+
+          {getHistory()?.map((data) => (
+            <Card key={data.id} data={data} />
+          ))}
+        </div>
+      </ScrollArea>
 
       {/* Floating Button */}
       <AddTransaction />
@@ -65,7 +98,7 @@ function DashboardCard({
         className
       )}
     >
-      <h1 className="capitalize font-medium">{title}</h1>
+      <h1 className="capitalize font-medium text-foreground">{title}</h1>
       <p className="text-5xl font-semibold">$ {amount}</p>
     </div>
   )
