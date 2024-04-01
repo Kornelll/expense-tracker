@@ -73,7 +73,7 @@ export const Dashboard: FC<DashboardProps> = ({ incomes, expenses }) => {
       </ScrollArea>
 
       {/* Floating Button */}
-      <AddTransaction />
+      <AddTransaction balance={balance} />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { FC } from 'react'
 import { toast } from 'sonner'
 import { useForm } from 'react-hook-form'
 import { ExpenseType } from '@prisma/client'
@@ -11,28 +12,33 @@ import { InputForm } from '@/components/ui/input-form'
 import { ExpensePayload, ExpenseValidator } from '@/lib/validators'
 import { addExpenseAction } from '@/lib/actions/add-expense'
 
-export const AddExpenseForm = () => {
+interface AddExpenseformProps {
+  balance: number
+  onAddExpense: VoidFunction
+}
+
+export const AddExpenseForm: FC<AddExpenseformProps> = ({
+  balance,
+  onAddExpense,
+}) => {
   const form = useForm<ExpensePayload>({
     resolver: zodResolver(ExpenseValidator),
   })
 
   function onSubmit(data: ExpensePayload) {
-    console.log({ data })
-    const promise = addExpenseAction(data)
+    if (balance < data.amount) {
+      return toast.error('Insufficient balance')
+    }
 
+    const promise = addExpenseAction(data)
     toast.promise(promise, {
       loading: 'Adding Expense...',
       success: () => {
-        form.reset({
-          title: undefined,
-          amount: undefined,
-          date: undefined,
-          description: undefined,
-          type: undefined,
-        })
+        form.reset()
+        onAddExpense()
         return 'Expense successfully added!'
       },
-      error: 'Error adding expense!',
+      error: (err) => `Error adding expense! ${(err as Error).message}`,
     })
   }
 

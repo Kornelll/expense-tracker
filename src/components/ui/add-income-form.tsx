@@ -1,5 +1,6 @@
 'use client'
 
+import { FC } from 'react'
 import { toast } from 'sonner'
 import { useForm } from 'react-hook-form'
 import { IncomeType } from '@prisma/client'
@@ -11,7 +12,11 @@ import { InputForm } from '@/components/ui/input-form'
 import { IncomePayload, IncomeValidator } from '@/lib/validators'
 import { addIncomeAction } from '@/lib/actions/add-income'
 
-export const AddIncomeForm = () => {
+interface AddIncomeFormProps {
+  onAddIncome: VoidFunction
+}
+
+export const AddIncomeForm: FC<AddIncomeFormProps> = ({ onAddIncome }) => {
   const form = useForm<IncomePayload>({
     resolver: zodResolver(IncomeValidator),
   })
@@ -22,13 +27,8 @@ export const AddIncomeForm = () => {
     toast.promise(promise, {
       loading: 'Adding Income...',
       success: () => {
-        form.reset({
-          title: undefined,
-          amount: undefined,
-          date: undefined,
-          description: undefined,
-          type: undefined,
-        })
+        form.reset()
+        onAddIncome()
         return 'Income successfully added!'
       },
       error: (error) => `Error adding income! ${(error as Error).message}`,

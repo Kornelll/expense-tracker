@@ -23,7 +23,7 @@ enum FormState {
   INCOME,
 }
 
-export function AddTransaction() {
+export function AddTransaction({ balance }: { balance: number }) {
   const [formState, setFormState] = useState<FormState>(FormState.NOT_SELECTED)
 
   const handleSetNotSelected = () => setFormState(FormState.NOT_SELECTED)
@@ -75,9 +75,16 @@ export function AddTransaction() {
             </div>
           )}
 
-          {formState === FormState.INCOME && <AddIncomeForm />}
+          {formState === FormState.INCOME && (
+            <AddIncomeForm onAddIncome={handleSetNotSelected} />
+          )}
 
-          {formState === FormState.EXPENSE && <AddExpenseForm />}
+          {formState === FormState.EXPENSE && (
+            <AddExpenseForm
+              balance={balance}
+              onAddExpense={handleSetNotSelected}
+            />
+          )}
         </div>
 
         <SheetFooter>
